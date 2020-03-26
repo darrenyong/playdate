@@ -1,0 +1,27 @@
+{
+  "name": "playdate",
+  "version": "1.0.0",
+  "description": "An app designed to make it easier to schedule doggie playdates",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "config": "^3.3.1",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "passport": "^0.4.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "request": "^2.88.2",
+    "validator": "^13.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "nodemon": "^2.0.2",
+    "prettier": "^2.0.2"
+  }
+}
