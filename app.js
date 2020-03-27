@@ -24,4 +24,4 @@ app.get('/', (req, res) => {
   res.json( {msg: 'This is a test'})
 });
 
-app.use('/user', users);
+app.use('/users', users);
