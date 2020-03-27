@@ -82,10 +82,10 @@ router.post('/login', (req, res) => {
             token: 'Bearer ' + token,
           })
         })
+      } else {
+        errors.password = 'Inccorect password';
+        return res.status(400).json(errors);
       }
-
-      errors.password = 'Inccorect password';
-      return res.status(400).json(errors);
     })
   })
 })
