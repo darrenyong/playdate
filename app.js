@@ -12,7 +12,7 @@ mongoose.connect(db, { useNewUrlParser: true }).then(() => {
 }).catch(err => {console.log(err)})
 
 app.listen(port, () => {});
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {

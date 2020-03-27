@@ -33,7 +33,14 @@ router.post('/register', (req, res) => {
 router.post('/login', (req, res) => {
   const { errors, isValid } = validateLoginInput(req.body);
 
-  User.findOne({ email: req.body.email }).then(user => {
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
+  const email = req.body.email;
+  const password = req.body.password;
+
+  User.findOne({ email }).then(user => {
     if (!user) {
       errors.email = 'There is no account with that e-mail!';
       return res.status(404).json(errors);
