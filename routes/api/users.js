@@ -1,9 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 const validateRegisterInput = require("../../validation/register");
 const validateLoginInput = require("../../validation/login");
+const keys = require('../../config/keys')
 const User = require('../../models/User')
 
 router.get('/test', (req, res) => {
@@ -17,16 +19,20 @@ router.post('/register', (req, res) => {
     return res.status(400).json(errors);
   }
 
-  User.findOne({ email: req.body.email }).then(user => {
+  const email = req.body.email
+  const handle = req.body.handle 
+  const password = req.body.password
+
+  User.findOne({ email }).then(user => {
     if (user) {
       errors.email = 'There is already a user with that e-mail';
       return res.status(400).json(errors);
     }
 
     const newUser = new User({
-      handle: req.body.handle,
-      email: req.body.email,
-      password: req.body.password
+      handle,
+      email,
+      password
     })
 
     bcrypt.genSalt(10, (err, salt) => {
@@ -34,16 +40,21 @@ router.post('/register', (req, res) => {
         if (err) throw err;
         newUser.password = hash;
         newUser.save().then(user => {
-          res.status(200).json(user).catch(err => {
-            console.log(err);
-          })
-        })
-      })
-    })
+          const payload = { id: user.id, handle }
 
-    return res.status(200)
-  })
-})
+          jwt.sign(payload, keys.secretOrKey, { expiresIn: 6000 }, (err, token) => {
+            res.json({
+              success: true,
+              token: 'Bearer ' + token,
+            });
+          });
+        }).catch(err => {
+          console.log(err);
+        });
+      });
+    });
+  });
+});
 
 router.post('/login', (req, res) => {
   const { errors, isValid } = validateLoginInput(req.body);
